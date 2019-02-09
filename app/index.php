@@ -15,7 +15,6 @@ $routes = [
 
 $route = $_SERVER['REQUEST_URI'];
 $get_param = stripos($route, '?');
-$image = stripos($route, '.jpeg');
 
 if($get_param !== false){
 	$route = substr($route, 0, $get_param);
