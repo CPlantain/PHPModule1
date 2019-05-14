@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Фев 07 2019 г., 18:56
+-- Время создания: Май 14 2019 г., 12:48
 -- Версия сервера: 5.7.23
 -- Версия PHP: 7.1.22
 
@@ -40,8 +40,7 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `title`, `picture`) VALUES
 (1, 'go to the store', '5c5c25409ae3b.jpeg'),
-(2, 'do the homework', NULL),
-(18, '111', NULL);
+(2, 'do the homework', NULL);
 
 --
 -- Индексы сохранённых таблиц
@@ -61,7 +60,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT для таблицы `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

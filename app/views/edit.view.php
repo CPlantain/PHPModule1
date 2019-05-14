@@ -10,7 +10,7 @@
 					</div>
 					
 					<? if(checkImage($post['picture'])) : ?>
-						<img src="./../uploads/<?=$post['picture']?>"  alt="">
+						<img src="./../uploads/<?=$post['picture']?>" class="my-3 rounded" width="450px" width="450px" alt="">
 					<? endif; ?>
 
 					<div class="form-group">

@@ -7,6 +7,7 @@ function dd($data){
 	die;
 }
 
+// проверяет, существует ли изображение (в БД или в форме)
 function checkImage($image){
 	if($image != null){
 		return true;

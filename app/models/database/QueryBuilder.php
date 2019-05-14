@@ -4,90 +4,68 @@ class QueryBuilder {
 
 	protected $pdo;
 
-	public function __construct($pdo){
+	public function __construct(PDO $pdo){
 		$this->pdo = $pdo;
 	}
 
-	public function getAll($table){
+	private function combineParams($params){
+		$keys = array_keys($params);
 
-		try{
-			$sql = "SELECT * FROM {$table}";
-			$statement = $this->pdo->prepare($sql);
-			$statement->execute();
-
-			return $statement->fetchAll(PDO::FETCH_ASSOC);
-
-		}catch(PDOException $e){
-			die("Query error");
+		$string = '';
+		foreach ($keys as $key) {
+			$string .= $key . '=:' . $key . ' AND ';
 		}
+		return rtrim($string, ' AND ');
 	}
 
-	public function getOne($table, $id){
+	public function getAll($table){
+		$sql = "SELECT * FROM {$table}";
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($params);
+		return $statement->fetchAll(PDO::FETCH_ASSOC);
+	}
 
-		try{
-			$sql = "SELECT * FROM {$table} WHERE id=:id";
-			$statement = $this->pdo->prepare($sql);
-			$statement->execute([
-				'id' => $id
-			]);
+	public function getOne($table, $params){
+		$keys = $this->combineParams($params);
 
-			return $statement->fetch(PDO::FETCH_ASSOC);
-
-		}catch(PDOException $e){
-			die("Query error");
-		}
+		$sql = "SELECT * FROM {$table} WHERE ({$keys})";
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($params);
+		return $statement->fetch(PDO::FETCH_ASSOC);
 	}
 
 	public function create($table, $data){
+		$keys = implode(', ', array_keys($data));
+		$tags = ':' . implode(', :', array_keys($data));
 
-		try{
-			$keys = implode(',', array_keys($data));
-			$tags = ':' . implode(', :', array_keys($data));
-
-			$sql = "INSERT INTO {$table} ({$keys}) values ({$tags})";
-			$statement = $this->pdo->prepare($sql);
-			$statement->execute($data);
-
-		}catch(PDOException $e){
-			die("Query error");
-		}
+		$sql = "INSERT INTO {$table} ({$keys}) values ({$tags})";
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($data);
 	}
 
-	public function update($table, $data, $id){
+	public function update($table, $data, $params){
+		$data_keys = array_keys($data);
 
-		try{
-
-			$keys = array_keys($data);
-
-			$string = '';
-			foreach ($keys as $key) {
-				$string .= $key . '=:' . $key . ',';
-			}
-
-			$keys = rtrim($string, ',');
-
-			$data['id'] = $id;
-
-			$sql = "UPDATE {$table} SET {$keys} WHERE id=:id";
-			$statement = $this->pdo->prepare($sql);
-			$statement->execute($data);
-
-		}catch(PDOException $e){
-			die("Query error");
+		$string = '';
+		foreach ($data_keys as $key) {
+			$string .= $key . '=:' . $key . ',';
 		}
+
+		$data_keys = rtrim($string, ',');
+		$param_keys = $this->combineParams($params);
+		$keys = array_merge($data, $params);
+
+		$sql = "UPDATE {$table} SET {$data_keys} WHERE {$param_keys}";
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($keys);
 	}
 
-	public function delete($table, $id){
-		try{
-			$sql = "DELETE FROM {$table} WHERE id=:id";
-			$statement = $this->pdo->prepare($sql);
-			$statement->execute([
-				'id' => $id
-			]);
+	public function delete($table, $params){
+		$keys = $this->combineParams($params);
 
-		}catch(PDOException $e){
-			die("Query error");
-		}
+		$sql = "DELETE FROM {$table} WHERE ({$keys})";
+		$statement = $this->pdo->prepare($sql);
+		$statement->execute($params);
 	}
 }
 

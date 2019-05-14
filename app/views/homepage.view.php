@@ -14,21 +14,21 @@
 				    </tr>
 				  </thead>
 				  <tbody>
-				  	<? foreach($posts as $post): ?>
+				  	<?php foreach($posts as $post): ?>
 						<tr>
 					      <th scope="row"><?= $post['id']; ?></th>
 					      <td><a href="/show?id=<?=$post['id']?>"><?= $post['title']; ?></a></td>
 					      <td>
-					      	<?if(checkImage($post['picture'])) : ?>
-					      		<img src="./../uploads/<?=$post['picture']?>"  alt="">
-					        <? endif; ?>
+					      	<?php if(checkImage($post['picture'])) : ?>
+					      		<img src="./uploads/<?=$post['picture']?>" class="rounded" width="150px" alt="">
+					        <?php endif; ?>
 					      	</td>
 					      <td>
 							<a href="edit?id=<?=$post['id']?>" class="btn btn-warning">Edit</a>
 							<a href="/delete?id=<?=$post['id']?>" class="btn btn-danger" onclick="return confirm('are you sure?')">Delete</a>
 					      </td>
 					    </tr>
-				  	<? endforeach; ?>
+				  	<?php endforeach; ?>
 				  </tbody>
 				</table>
 			</div>

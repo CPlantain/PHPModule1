@@ -1,18 +1,37 @@
 <?php
 
+// класс для валидации формы
+
 class InputValidation {
+	private $error;
+	private $required;
+	private $valid = false;
 
-	public static function checkLength($fields){
+	public function __construct(array $required){
+		$this->required = $required;
+	}
 
-		foreach ($fields as $field => $value) {
+	// проверяет заполненность обязательных полей
+	public function checkRequired(){
+
+		foreach ($this->required as $field => $value) {
 			if(strlen($value) <= 0){
 
-				$error = 'поле ' . $field . ' обязательно для заполнения';
-				return $error;
-
+				$this->error = 'поле ' . $field . ' обязательно для заполнения';
+				$this->valid = false;
 			} else {
-				return true;
+				$this->valid = true;
 			}
 		}
+	}
+
+	// показывает, валидна ли проверяемая форма
+	public function isValid(){
+		return $this->valid;
+	}
+
+	// выводит ошибки
+	public function ShowError(){
+		echo $this->error;
 	}
 }

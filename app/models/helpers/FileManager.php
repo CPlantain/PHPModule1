@@ -1,5 +1,7 @@
 <?php
 
+// класс для работы с файлами
+
 class FileManager {
 
 	private function generateFilename($file_type){
@@ -20,7 +22,7 @@ class FileManager {
 		return $file_name;
 	}
 
-	public function delete($file_name, $file_path){
+	public static function delete($file_name, $file_path){
 
 		$path = __DIR__ . $file_path;
 		$destination = $path . $file_name;

@@ -2,8 +2,8 @@
 
 $db = require_once __DIR__ . '/../models/database/start.php';
 
-$id = $_GET['id'];
-$post = $db->getOne('posts', $id);
+$param = [ 'id' => $_GET['id'] ];
+$post = $db->getOne('posts', $param);
 
 require_once __DIR__ . '/../views/show.view.php';
 
